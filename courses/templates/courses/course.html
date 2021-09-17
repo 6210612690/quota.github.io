@@ -1,0 +1,50 @@
+{% extends "courses/layout.html" %}
+{% block content %}
+    {%if request.user.is_superuser%}
+        <a href="/logout">Logout</a>
+    {%endif%}
+    {%if not request.user.is_superuser%}
+        <a href="/logout">Logout</a>
+    {%endif%}
+{% endblock %}
+
+{% block body %}
+
+    <h1>Course {{course.id}}</h1>
+    
+    <ul>
+        <li>Code: {{course.code}}</li>
+        <li>Name: {{course.name}}</li>
+        <li>Semester/year: {{course.semester}}/{{course.year}}</li>
+        <li>Available: {{course.count}}/{{course.amount}}</li>
+    </ul>
+    <h2>Registered in this course</h2>
+    
+    <ul>
+        {%if request.user.is_superuser%}
+        {% for student in students %}
+        <li>{{ student.first_name }} {{ student.last_name }}</li>
+        {% empty %}
+        <li>No student in this course</li>
+        {% endfor %}
+        {%endif%}
+
+
+        {%if not request.user.is_superuser%}
+        <br>   
+        {% if num > 0 and request.user not in students%}
+            <p><a href="{% url 'courses:register' course.id %}"class= "btn btn-outline-success">Register</a></p> 
+        {%elif request.user in students%}
+            <p><a href="{% url 'courses:remove' course.id %}"class= "btn btn-outline-danger">Remove</a></p> 
+        {%endif %}
+        {%endif%}
+        <br>
+        <p><a href="{% url 'courses:index' %}"class= "btn btn-outline-primary">course list</a></p>
+
+    </ul>
+    
+    
+    
+
+   
+{% endblock %}

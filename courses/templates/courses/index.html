@@ -1,0 +1,24 @@
+{% extends "courses/layout.html" %}
+{% block content %}
+    {%if request.user.is_superuser%}
+        <a href="/logout">Logout</a>
+    {%endif%}
+    {%if not request.user.is_superuser%}
+        <a href="/logout">Logout</a>
+    {%endif%}
+{% endblock %}
+
+{% block body %}
+
+    <ul>
+    <h1> Course Lists</h1>
+    
+    {% for course in courses %}
+        {%if course.status == 1%}
+        <li><a href="{% url 'courses:course' course.id %}">{{ course.code }} {{ course.name }}</a></li>
+        {%endif%}
+    {% endfor %}
+    
+    </ul>
+
+{% endblock %}
