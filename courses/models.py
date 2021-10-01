@@ -19,3 +19,5 @@ class Course(models.Model):
     def __str__(self):
         return f"{self.id}: {self.code} {self.name} {self.semester}/{self.year} {self.amount} status-{self.status}"
         
+    def is_course_available(self):
+        return self.registered_course.count() < self.amount
