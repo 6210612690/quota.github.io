@@ -69,16 +69,18 @@ class CourseViewTestCase(TestCase):
         response = c.get(reverse('courses:register', args=(c1.id,)))
         self.assertEqual (c1.registered_course.count(), 2)
         
-        
-
-        
     
+    def test_authenticated_user_remove_course(self):
+        
+        user = User.objects.create(username="user2", password="1234", email="user2@example.com")
+        c1 = Course.objects.first()
+        c1.registered_course.add(user)
+        
+        c = Client()
+        c.force_login(user)
+        response = c.get(reverse('courses:remove', args=(c1.id,)))
+        self.assertEqual (c1.registered_course.count(), 1)
     
-        
-        
-        
-        
-        
         
         
         
